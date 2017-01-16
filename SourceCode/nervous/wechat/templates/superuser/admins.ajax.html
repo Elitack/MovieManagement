@@ -1,0 +1,85 @@
+<div class="top-row">
+    <a>&nbsp;</a>
+    <a class="fake-link pull-right">
+        <strong>List of Admin　<i class="fa fa-user fa-fw"></i></strong>
+    </a>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>List of Admin<span class="badge pull-right">{{ admins|length }}</span></h4></div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Remarks</th>
+                            <th>Email</th>
+                            <th style="width: 70px">Operation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <script>
+                            $(function () {
+                                $("body").popover({
+                                    html: true,
+                                    container: "body",
+                                    placement: "auto right",
+                                    selector: ".delete-link",
+                                    title: "Sure to delete？",
+                                    trigger: "focus"
+                                });
+                            });
+                        </script>
+                        {% for admin in admins %}
+                            <tr>
+                                <td>{{ admin.username }}</td>
+                                <td>{{ admin.description }}</td>
+                                <td>{{ admin.email }}</td>
+                                <td align="right">
+                                    <a href="javascript:void(0)" class="fake-link delete-link"
+                                       data-toggle="popover" tabindex="-1" data-content="
+                                        <form id='delete-admin-{{ forloop.counter }}-popover'>
+                                            {% csrf_token %}
+                                            <button class='btn btn-default'>Cancle</button>
+                                            <input style='display: none;' name='username' value='{{ admin.username }}'>
+                                            <span>　</span>
+                                            <button type='submit' class='btn btn-danger form-btn'>Delete</button>
+                                        </form>
+                                        <script>
+                                            handleFormPost('#delete-admin-{{ forloop.counter }}-popover', '{% url 'api/del_admin' %}', {
+                                                success_callback: function (data) {
+                                                    if (data.status === 'ok') {
+                                                        showConfirmModal('Delete Admin', 'Admin <b>{{ admin.username }}</b> done deleting', true);
+                                                        loadContentOfItem('#admins-list-item', {
+                                                            replace: true,
+                                                            anim: false,
+                                                            scroll: false
+                                                        });
+                                                    }
+                                                }
+                                            });
+                                        </script>">
+                                        <span class="fa fa-user-times"></span> Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <hr style="margin-top: 0">
+                <ul class="list-inline pull-right">
+                    <li>
+                        <a href="javascript:showModal('{% url 'modals/superuser/add-admin-modal' %}', 'add-admin-modal')">
+                            <span class="fa fa-user-plus"></span> Add the admin
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

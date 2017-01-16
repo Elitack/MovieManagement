@@ -1,0 +1,18 @@
+{% extends 'common/sortable_content.html' %}
+{% load model_extras %}
+
+{% block no-data-info %}
+    No Applications
+{% endblock no-data-info %}
+
+{% block content %}
+    {% for account in items %}
+        <tr>
+            <td><a class="ajax-link" data-url="{% url 'admin/detail' account.id %}">
+                {{ account.name }}
+            </a></td>
+            <td>{{ account.application.manager_name }}</td>
+            <td><a href="{{ account.wx_id }}"> {{ account.wx_id|linebreaksbr|truncatechars:100 }}</a></td>
+        </tr>
+    {% endfor %}
+{% endblock content %}

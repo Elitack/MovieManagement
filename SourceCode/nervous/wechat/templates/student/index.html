@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Movie System{% endblock title %}
+
+{% block subtitle %}
+    <a class="navbar-brand fake-link-scroll">&gt;</a>
+    <a class="navbar-brand fake-link-scroll">Movie Applications</a>
+{% endblock subtitle %}
+
+{% block user-menu %}
+    <li><a href="{% url 'student/change-info' %}">
+        <i class="glyphicon glyphicon-info-sign"></i>　Account Information
+    </a></li>
+    <li role="separator" class="divider"></li>
+    <li><a href="{% url 'logout' %}">
+        <i class="glyphicon glyphicon-log-out"></i>　Log Out</a>
+    </li>
+{% endblock user-menu %}
+
+{% block left-column %}
+    <a class="fake-link left-column-menu" data-toggle="collapse" data-target="#application-menu">
+        <strong><i class="fa fa-wrench fa-fw"></i>　Applications Management</strong>
+    </a>
+    <hr>
+    <ul class="nav nav-stacked collapse in" id="application-menu">
+        <ul class="nav nav-stacked collapse in nav-pills">
+            <li id="my-applications-item" class="left-column-item"
+                data-url="{% url 'student/my-applications' %}">
+                <a class="fake-link">
+                    <i class="fa fa-briefcase fa-fw"></i>　My Applications
+                    <span class="badge badge-info pull-right"
+                          data-source="{% url 'badges/student/pending-count' %}"></span>
+                </a>
+            </li>
+            <li id="add-application-item" class="left-column-item"
+                data-url="{% url 'student/add-application' %}">
+                <a class="fake-link"><i class="fa fa-plus-circle fa-fw"></i>　Add Applications</a>
+            </li>
+            {% for account in official_accounts %}
+                <li id="message-detail-{{ account.id }}" class="left-column-item"
+                    data-url="{% url 'message/student' account.id %}">
+                    <a class="fake-link">
+                        <i class="fa fa-comment fa-fw"></i>　Mail - {{ account.name|truncatechars:6 }}
+                        <span class="badge badge-info pull-right"
+                              data-source="{% url 'badges/student/account-unprocessed-message-count' account.id %}">
+                        </span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </ul>
+    <hr>
+
+    <a class="fake-link left-column-menu" data-toggle="collapse" data-target="#analyse-menu">
+        <strong><i class="fa fa-signal fa-fw"></i>　Show Slide</strong>
+    </a>
+    <ul class="nav nav-stacked collapse in" id="analyse-menu">
+        <hr>
+        <ul class="nav nav-stacked collapse in nav-pills">
+            <li id="articles-list-item" class="nav-header left-column-item"
+                data-url="{% url 'admin/articles' %}">
+                <a class="fake-link"><i class="fa fa-file-text fa-fw"></i>　List of Detail</a>
+            </li>
+
+        </ul>
+    </ul>
+
+
+
+    <hr>
+{% endblock left-column %}
+
+{% block main-page %}
+    <script>
+        $(function () {
+            loadContentOfItem("#my-applications-item");
+        });
+    </script>
+{% endblock main-page %}

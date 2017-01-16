@@ -1,0 +1,8 @@
+Contribution:
+
+李止戈(5140219115): django back-end framework construction, designing the model of the database, the api code of the connections between the back-end and the front-end. The style and the layout of the website.
+
+吕呈恒(5140219046): front-end css code, dynamic javascript code.
+
+侯嘉伟(5140219098): Designing and implementation of the crawler. Database construction and encryption of the password. 
+    

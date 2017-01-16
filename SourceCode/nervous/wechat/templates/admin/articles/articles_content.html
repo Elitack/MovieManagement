@@ -1,0 +1,21 @@
+{% extends 'common/sortable_content.html' %}
+
+{% block no-data-info %}
+    None
+{% endblock no-data-info %}
+
+{% block content %}
+    {% for account in items %}
+        <tr>
+            <td><a target="_blank" href="{{ account.wx_id }}">
+                <div>{{ account.name|truncatechars:100 }}</div>
+            </a></td>
+            <td>{{ account.remark|linebreaksbr|truncatechars:150 }}</td>
+            <td align="right">
+                {{ account.num }}
+            </td>
+            <td align="right">{{ account.score }}<ra/td>
+            <td align="right">{{ account.year }}</td>
+        </tr>
+    {% endfor %}
+{% endblock content %}

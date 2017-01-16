@@ -1,0 +1,154 @@
+{% load model_extras %}
+
+<div class="top-row">
+    <a>&nbsp</a>
+    <a class="fake-link pull-right">
+        <strong>Information Overview　<i class="fa fa-dashboard fa-fw"></i></strong>
+    </a>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Pending Application<span class="badge pull-right">{{ pending_applications|length }}</span></h4></div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th style="width: 15%; min-width: 150px">Name</th>
+                            <th style="width: 15%; min-width: 110px">Person</th>
+                            <th style="width: 10000px">Introduction</th>
+                            <th>
+                                <div style="width: 55px"></div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if pending_applications %}
+                            {% for app in pending_applications %}
+                                <tr>
+                                    <td>{{ app.name }}</td>
+                                    <td>{{ app.manager_name }}</td>
+                                    <td>{{ app.description|linebreaksbr|truncatechars:100 }}</td>
+                                    <td>
+                                        <a class="fake-link"
+                                           href="javascript:showModal('{% url 'modals/admin/process-application-modal' app.id %}', 'application-modal')">
+                                            <span class="fa fa-check-square-o fa-fw"></span> Application
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10000" style="text-align: center">No pending applications</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+                {% if show_all_pending_applications %}
+                    <hr style="margin-top: 0">
+                    <ul class="list-inline pull-right">
+                        <li><a class="ajax-link" data-url="{% url 'admin/applications' 'pending' %}">
+                            <span class="fa fa-ellipsis-h fa-fw"></span> See All
+                        </a></li>
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+        <hr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Latest Applications</h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th style="width: 15%; min-width: 100px">Movie Name</th>
+                            <th style="width: 15%; min-width: 100px; max-width: 200px;">Admin</th>
+                            <th style="max-width: 50px;">Comment Num</th>
+                            <th style="width: 150px"><span class="fa fa-eye fa-fw"></span> Published Year</th>
+                            <th style="width: 150px"><span class="fa fa-thumbs-o-up fa-fw"></span> DouBan Score</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% if official_accounts %}
+                            {% for account in official_accounts %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        <a href="{{account.wx_id}}"> {{ account.name }} </a>
+                                    </td>
+                                    <td>
+                                            <div>{{ account.application.manager_name|truncatechars:100 }}</div>
+                                    </td>
+                                    <td>{{ account.num|linebreaksbr|truncatechars:150 }}</td>
+                                    <td align="right">
+                                        {{ account.year }}
+                                    </td>
+                                    <td align="right">{{ account.score }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10000" style="text-align: center">暂无文章</td>
+                            </tr>
+                        {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/col-->
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Announcement</h4>
+            </div>
+            {% if announcement %}
+                <div class="panel-body">
+                    <div class="alert alert-info" role="alert" style="word-wrap: break-word;">
+                        {{ announcement|linebreaksbr }}
+                    </div>
+                </div>
+            {% else %}
+                <div class="panel-body" style="text-align: center">
+                    No announcement now
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>mails not read</h4></div>
+            {% if unprocessed_account %}
+                <div class="panel-body">
+                    {% for account in unprocessed_account %}
+                        <p>
+                            <a style="cursor:pointer;" class="message-link"
+                               data-url="{% url 'message/admin' account.id %}">
+                                {{ account.name }}</a>
+                            <span class="badge pull-right">{{ account|unprocessed_messages_count:category }}</span>
+                        </p>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="panel-body" style="text-align: center">
+                    No messages unread
+                </div>
+            {% endif %}
+            <script>
+                $(".message-link").click(function () {
+                    loadContent($(this).data("url"), {});
+                });
+            </script>
+        </div>
+
+    </div>
+</div>

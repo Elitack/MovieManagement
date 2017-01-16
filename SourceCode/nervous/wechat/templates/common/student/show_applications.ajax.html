@@ -1,0 +1,162 @@
+<div class="top-row">
+    <a>&nbsp;</a>
+    <a class="fake-link pull-right">
+        <strong>My Applications<i class="fa fa-briefcase fa-fw"></i></strong>
+    </a>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>My Applications<span class="badge pull-right">{{ pending_count }}</span></h4>
+            </div>
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table table-striped" id="application-list">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Descriptions</th>
+                            <th>Condition</th>
+                            <th>Conductor</th>
+                            <th align="right">
+                                <div style="width: 135px"></div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <script>
+                            $(function () {
+                                $("body").popover({
+                                    html: true,
+                                    container: "body",
+                                    placement: "auto right",
+                                    selector: ".delete-link",
+                                    title: "Sure to delete？",
+                                    trigger: "focus"
+                                });
+                            });
+                        </script>
+                        {% if applications %}
+                            {% for app in applications %}
+                                <tr>
+                                    <td>{{ app.name }}</td>
+                                    <td>{{ app.description|linebreaksbr|safe }}</td>
+                                    <td>
+                                    <span class="label label-{{ app.status_display.colorclass }}">
+                                        <span class="fa {{ app.status_display.icon }} fa-fw"></span> {{ app.status_display.name }}
+                                    </span>
+                                    </td>
+                                    <td>{{ app.operator_admin }}</td>
+                                    <td style="text-align: right">
+                                        {% if app.status == 'pending' %}
+                                            <a data-id="{{ app.id }}" class="fake-link recall-link">
+                                                <span class="fa fa-share-square-o fa-fw"></span> Withdraw
+                                            </a>
+                                        {% elif app.status == 'not_submitted' %}
+                                            <a data-id="{{ app.id }}" class="fake-link modify-link">
+                                                <span class="fa fa-edit fa-fw"></span> Modify
+                                            </a>
+                                            <span>&nbsp;&nbsp;</span>
+                                            <a href="javascript:void(0)" tabindex="-1" class="fake-link delete-link"
+                                               data-toggle="popover" data-content="
+                                            <div id='delete-app-{{ app.id }}-popover'>
+                                                {% csrf_token %}
+                                                <button class='btn btn-default'>Cancle</button>
+                                                <span>　</span>
+                                                <button type='button' class='btn btn-danger form-btn'
+                                                    data-id='{{ app.id }}'>Delete</button>
+                                            </div>
+                                            <script>
+                                                $('#delete-app-{{ app.id }}-popover').find('button.form-btn')
+                                                    .click(delete_app_callback);
+                                            </script>">
+                                                <span class="fa fa-minus-square-o fa-fw"></span> Delete
+                                            </a>
+                                        {% elif app.status == 'rejected' %}
+                                            <a data-id="{{ app.id }}" class="fake-link modify-link">
+                                                <span class="fa fa-edit fa-fw"></span> Modify
+                                            </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="10000" style="text-align: center">No Applications Yet</td>
+                            </tr>
+                        {% endif %}
+                        <script>
+                            $(function () {
+                                var msg = $("#error-msg");
+                                msg.fadeOut(0);
+                                msg.find("> button").click(function () {
+                                    $("#error-msg").fadeOut();
+                                });
+
+                                $(".modify-link").click(function () {
+                                    var id = $(this).data("id");
+                                    loadContent("/student/modify_application/" + id);
+                                });
+                                delete_app_callback = function (event) {
+                                    event.preventDefault();
+                                    var id = $(this).data("id");
+                                    var url = "/api/delete_application/" + id;
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        data: "",
+                                        success: function (data) {
+                                            if (data.status === "ok") {
+                                                showConfirmModal("Withdraw the applications", "Delete Success！", true);
+                                                loadContentOfItem("#my-applications-item", {
+                                                    replace: true,
+                                                    anim: false,
+                                                    scroll: false
+                                                });
+                                            }
+                                        },
+                                        error: function (xhr, textStatus, errorThrown) {
+                                            var msg = $("#error-msg");
+                                            msg.find("label").html("Error in Applications：" + textStatus + ": " + errorThrown);
+                                            console.log(xhr.responseText);
+                                            msg.fadeIn();
+                                        }
+                                    });
+                                };
+                                $(".recall-link").click(function (event) {
+                                    event.preventDefault();
+                                    var id = $(this).data("id");
+                                    var url = "/api/recall_application/" + id;
+                                    $.ajax({
+                                        type: "POST",
+                                        url: url,
+                                        data: "",
+                                        success: function (data) {
+                                            if (data.status === "ok") {
+                                                showConfirmModal("Withdraw the applications", "Withdraw success！", true);
+                                                loadContentOfItem("#my-applications-item", {
+                                                    replace: true,
+                                                    anim: false,
+                                                    scroll: false
+                                                });
+                                            }
+                                        },
+                                        error: function (xhr, textStatus, errorThrown) {
+                                            var msg = $("#error-msg");
+                                            msg.find("label").html("Error in applications" + textStatus + ": " + errorThrown);
+                                            console.log(xhr.responseText);
+                                            msg.fadeIn();
+                                        }
+                                    });
+                                });
+                            });
+                        </script>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

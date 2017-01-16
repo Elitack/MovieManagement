@@ -1,0 +1,24 @@
+{% extends 'common/sortable.html' %}
+
+{% block title %}Overview of the details{% endblock title %}
+
+{% block defaults %}
+    url: "{% url 'admin/articles-list' %}",
+    sort_by: "year",
+    sort_order: "desc",
+    search_field: "name"
+{% endblock defaults %}
+
+{% block head %}
+    <th style="width: 25%; min-width: 100px" data-key="name">Name</th>
+    <th>Introduction</th>
+    <th class="th-sortable" style="width: 105px" data-key="num">
+        <span class="fa fa-eye fa-fw"></span> Comment Num
+    </th>
+    <th class="th-sortable" style="width: 105px" data-key="score">
+        <span class="fa fa-thumbs-o-up fa-fw"></span> Douban Score
+    </th>
+    <th class="th-sortable" data-key="year"
+        style="width: 120px"><span class="fa fa-calendar fa-fw"></span> Published Year
+    </th>
+{% endblock head %}

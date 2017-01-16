@@ -1,0 +1,30 @@
+{% extends 'common/sortable_content.html' %}
+
+{% block no-data-info %}
+    暂无文章
+{% endblock no-data-info %}
+
+{% block content %}
+        <tr>
+            <td>
+                <div>{{ items.category|truncatechars:100 }}</div>
+            </td>
+            <td>{{ items.remark|linebreaksbr|truncatechars:150 }}</td>
+            <td align="right">
+                {{ items.score }}
+            </td>
+            <td align="right">{{ items.num }}</td>
+            <td align="right">{{ items.year }}</td>
+        </tr>
+
+    <script>
+        $(".article-avatar").each(function (index) {
+            var obj = $(this);
+            setTimeout(function () {
+                obj.html(ReferrerKiller.imageHtml(obj.data("src"), {
+                    "alt": obj.data("alt")
+                }));
+            }, index * 200);
+        });
+    </script>
+{% endblock content %}

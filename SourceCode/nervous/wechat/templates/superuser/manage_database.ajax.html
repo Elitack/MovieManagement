@@ -1,0 +1,69 @@
+<div class="top-row">
+    <a>&nbsp;</a>
+    <a class="fake-link pull-right">
+        <strong>Database Information Overview　<i class="fa fa-th-large fa-fw"></i></strong>
+    </a>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Database Information</h4></div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    <li class="list-group-item"><b>Super Admin</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">Account:     <b>{{ root_name }}</b></div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>Movie information</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">Movies in total : <b>{{ count.OfficialAccount }}</b> </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>Users information</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">Registered Users : <b>{{ count.Student }}</b></div>
+                            <div class="col-sm-6">Applications in Total : <b>{{ count.Application }}</b> </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">Applications Approved : <b>{{ count.application_approved }}</b> </div>
+                            <div class="col-sm-6">Applications Rejected : <b>{{ count.application_rejected }}</b> </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">Applications in Pending : <b>{{ count.application_pending }}</b> </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>Admin information</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">Admin Nums : <b>{{ count.Admin }}</b> </div>
+                            <div class="col-sm-6">Mail Nums : <b>{{ count.Message }}</b> </div>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="list-group">
+                    <li class="list-group-item"><b>Database Information</b></li>
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">Database Version <b>SQLite3</b></div>
+                        </div>
+                    </li>
+                </ul>
+
+
+            </div>
+        </div>
+
+    </div>
+</div>

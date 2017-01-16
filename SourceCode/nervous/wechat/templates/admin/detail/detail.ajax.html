@@ -1,0 +1,108 @@
+{% load staticfiles %}
+
+<div class="top-row">
+    <a class="fake-link" onclick="History.back()">
+        <strong><i class="fa fa-chevron-left fa-fw"></i>　Back</strong>
+    </a>
+    <a class="fake-link pull-right">
+        <strong>Detail Information of Movies　<i class="fa fa-briefcase fa-fw"></i></strong>
+    </a>
+</div>
+<hr>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>Basic Information<span class="badge pull-right">{{ pending_count }}</span></h4></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="pull-left" style="width: 320px; height: 220px;
+                                background: url({{ account.pic }})
+                                -50px -50px no-repeat;"></div>
+                        <div style="margin-left: 105px; vertical-align: middle; line-height: 160%;">
+                            <b>Name：</b>{{ account.name }}<br/>
+                            <b>Score for Advise：</b>{{ account.association }}<br/>
+                            <b>Dealing Admin：</b>{{ account.application.operator_admin }}<br/>
+                            <b>Reason for Advise：</b>{{ account.description|linebreaksbr }}<br/>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div style="line-height: 160%;">
+                            <b>Name of Advisor：</b>{{ account.manager_name }}<br/>
+                            <b>Number ID of Advisor：</b>{{ account.manager_student_id }}<br/>
+                            <b>Sex of Advisor：</b>{{ account.manager_dept }}<br/>
+                            <b>Tel of Advisor：</b>{{ account.manager_tel }}<br/>
+                            <b>Mail of Advisor：</b><a style="word-wrap: break-word;"
+                                href="mailto:{{ account.manager_email }}">{{ account.manager_email }}</a><br/>
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right" style="margin-top: 10px">
+                    <button class="btn btn-danger" id="remove-account-link">
+                        <span class="fa fa-remove fa-fw"></span>
+                        &nbsp;Delete the Movie
+                    </button>
+                    <script>
+                        $("#remove-account-link").click(function () {
+                            showConfirmModal("Sure to delete", "Sure to delete the movie <b>{{ account.name }}</b> ？", false, function () {
+                                console.log("delete {{ account.id }}");
+                                var url = "{% url 'api/delete_official_account'%}";
+                                $.ajax({
+                                    type: "POST",
+                                    url: url,
+                                    data: {
+                                        'id': {{ account.id }}
+                                    },
+                                    success: function (data) {
+                                        loadContentOfItem("#official-accounts-list-item", {"replace": true});
+                                    },
+                                    error: function (xhr, textStatus, errorThrown) {
+                                        //alert("删除公众号遇到错误：" + textStatus + ": " + errorThrown);
+                                        showConfirmModal("未能成功删除",
+                                                "删除公众号遇到错误：" + textStatus + ": " + errorThrown, true);
+                                        console.log(xhr.responseText);
+                                    }
+                                });
+                            });
+                        });
+                    </script>
+                    <button class="btn btn-info" style="margin-left: 10px"
+                            id="statistics-link">
+                        <span class="fa fa-bar-chart fa-fw"></span>
+                        &nbsp;Check the Detail
+                    </button>
+                    <button class="btn btn-info" style="margin-left: 10px; display: none"
+                            id="articles-link">
+                        <span class="fa fa-file-text fa-fw"></span>
+                        &nbsp;查看文章
+                    </button>
+                    <script>
+                        $(function () {
+                            $("#statistics-link").click(function () {
+                            window.location.href="{{ account.wx_id }}"
+                            });
+
+                            $("#articles-link").click(function () {
+                                $("#statistics-link").css("display", "");
+                                $(this).css("display", "none");
+                                loadContentOn($("#detail-page-main"),
+                                        "{% url 'admin/detail/articles' official_account_id %}",
+                                        {}, {anim: true, scroll: true});
+                            });
+                        });
+                    </script>
+                    <button class="btn btn-primary ajax-link" style="margin-left: 10px"
+                            data-url="{% url 'message/admin' official_account_id %}">
+                        <span class="fa fa-comment fa-fw"></span>
+                        &nbsp;See the Mail
+                    </button>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div id="detail-page-main">
+            {% include 'admin/detail/detail_articles.html' %}
+        </div>
+    </div>
+</div>

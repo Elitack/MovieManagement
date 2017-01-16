@@ -1,0 +1,242 @@
+<div class="modal fade" id="application-modal" tabindex="-1" role="dialog" aria-labelledby="application-modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Applications Approvement</h4>
+            </div>
+            <div class="modal-body form-display">
+                <div class="control-group row">
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="name-field">Name</label>
+                        <input id="name-field" name="name" type="text" class="form-control"
+                               value="{{ app.name }}" readonly>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="wx_id-field">Movie Link</label>
+                        <input id="wx_id-field" name="wx_id" type="text" class="form-control"
+                               placeholder="" value="{{ app.official_account.wx_id }}" readonly>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-12 form-group">
+                        <label class="control-label" for="description-field">Reason for Advice</label>
+                        <textarea id="description-field" name="description" class="form-control"
+                                  style="resize: vertical;" readonly>{{ app.description|default:"No Reason" }}</textarea>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-12 form-group">
+                        <label class="control-label" for="association-field">Scrore You Give</label>
+                        <input id="association-field" name="association" type="text" class="form-control"
+                               placeholder="" value="{{ app.association }}" readonly>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_name-field">Name of the Advisor</label>
+                        <input id="manager_name-field" name="manager_name" type="text"
+                               class="form-control" value="{{ app.manager_name }}" readonly>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_student_id-field">Number ID</label>
+                        <input id="manager_student_id-field" name="manager_student_id"
+                               type="text" class="form-control" value="{{ app.manager_student_id }}" readonly>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_tel-field">Tel</label>
+                        <input id="manager_tel-field" name="manager_tel" type="text"
+                               class="form-control" value="{{ app.manager_tel }}" readonly>
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_email-field">Mail</label>
+                        <input id="manager_email-field" name="manager_email" type="email"
+                               class="form-control" value="{{ app.manager_email }}" readonly>
+                    </div>
+                </div>
+                <div class="control-group row">
+                    <div class="col-sm-6 form-group">
+                        <label class="control-label" for="manager_dept-field">Sex</label>
+                        <input id="manager_dept-field" name="manager_dept" type="text"
+                               class="form-control" value="{{ app.manager_dept }}" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                {% if type == 'process' %}
+                    <form id="process-application-form" class="form form-vertical" role="form" data-toggle="validator">
+                        {% csrf_token %}
+                        <input name="status" value="none" type="text" style="display: none;">
+                        <input name="id" type="text" style="display: none;" value="{{ app.id }}">
+
+                        <div class="control-group" style="text-align: left;">
+                            <label class="control-label" for="process-buttons">Choose the Result</label>
+
+                            <div id="process-buttons" style="text-align: center;">
+                                <button type="button" id="reject-button" class="btn btn-default">
+                                    <span class="fa fa-times-circle fa-lg"></span>
+
+                                    <div>Reject</div>
+                                </button>
+                                &nbsp;&nbsp;Or
+                                <button type="button" id="approve-button" class="btn btn-default">
+                                    <span class="fa fa-check-circle fa-lg"></span>
+
+                                    <div>Approve</div>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="reject-collapse" class="collapse row" style="text-align: left;">
+                            <div class="col-xs-12 form-group">
+                                <label class="control-label" for="reject_reason-field">Reject Reason</label>
+                                <textarea id="reject_reason-field" name="reject_reason" class="form-control"
+                                          style="resize: vertical;"></textarea>
+                            </div>
+                        </div>
+
+                        <div id="score-collapse" class="collapse row" style="text-align: left;">
+                            <div class="col-xs-6 form-group">
+                                <label class="control-label" for="score-field">Douban Score</label>
+                                <textarea id="score-field" name="score" class="form-control" rows="1"
+                                          style="resize: vertical;"></textarea>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label class="control-label" for="year-field">on screen year</label>
+                                <textarea id="year-field" name="year" class="form-control" rows="1"
+                                          style="resize: vertical;"></textarea>
+                            </div>
+                        </div>
+
+                        <div id="year-collapse" class="collapse row" style="text-align: left;">
+                            <div class="col-xs-6 form-group">
+                                <label class="control-label" for="category-field">Category</label>
+                                <textarea id="category-field" name="category" class="form-control" rows="1"
+                                          style="resize: vertical;"></textarea>
+                            </div>
+                            <div class="col-xs-6 form-group">
+                                <label class="control-label" for="num-field">Person commented numbers</label>
+                                <textarea id="num-field" name="num" class="form-control" rows="1"
+                                          style="resize: vertical;"></textarea>
+                            </div>
+                        </div>
+
+                        <div id="pic-collapse" class="collapse row" style="text-align: left;">
+                          <div class="col-xs-12 form-group">
+                              <label class="control-label" for="pic-field">Picture Link</label>
+                              <textarea id="pic-field" name="pic" class="form-control" rows="1"
+                                        style="resize: vertical;"></textarea>
+                          </div>
+                        </div>
+
+                        <div id="remark-collapse" class="collapse row" style="text-align: left;">
+                          <div class="col-xs-12 form-group">
+                              <label class="control-label" for="remark-field">Description</label>
+                              <textarea id="remark-field" name="remark" class="form-control"
+                                        style="resize: vertical;"></textarea>
+                          </div>
+                        </div>
+
+                        <div id="submit-button-field" class="collapse">
+                            <button type="submit" class="btn btn-primary form-btn">
+                                Done
+                            </button>
+                        </div>
+                    </form>
+                {% else %}
+                    <div class="form-display">
+                        <div class="row control-group">
+                            <div class="col-xs-12 form-group">
+                                <label class="control-label" for="status-field">审批状态</label>
+
+                                <h3 style="text-align: center;">
+                                    <span id="status-field" class="label label-{{ app.status_display.colorclass }}">
+                                        <span class="fa {{ app.status_display.icon }} fa-fw"></span> {{ app.status_display.name }}
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                        {% if app.status == 'rejected' %}
+                            <div class="row control-group">
+                                <div class="col-xs-12 form-group">
+                                    <label class="control-label" for="reject_reason-field">拒绝理由</label>
+                                    <textarea id="reject_reason-field" name="reject_reason" class="form-control"
+                                              style="resize: vertical;" readonly>{{ app.reject_reason }}</textarea>
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="control-group">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            完成
+                        </button>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% if type == 'process' %}
+    <script>
+        var modal = $("#application-modal");
+
+        var reject_button = modal.find("#reject-button");
+        var approve_button = modal.find("#approve-button");
+        var status_input = modal.find("input[name=status]");
+        var reject_collapse = modal.find("#reject-collapse");
+        var score_collapse = modal.find("#score-collapse");
+        var year_collapse = modal.find("#year-collapse");
+        var pic_collapse = modal.find("#pic-collapse");
+        var remark_collapse = modal.find("#remark-collapse");
+        var submit_button = modal.find("#submit-button-field");
+        var reason_field = modal.find("#reject-reason-field");
+
+        modal.ready(function () {
+            reject_button.click(function () {
+                approve_button.removeClass("btn-success").addClass("btn-default");
+                reject_button.removeClass("btn-default").addClass("btn-danger");
+                status_input.val("rejected");
+                reject_collapse.collapse('show');
+                score_collapse.collapse('hide');
+                year_collapse.collapse('hide');
+                pic_collapse.collapse('hide');
+                remark_collapse.collapse('hide');
+                submit_button.collapse('show');
+            });
+
+            approve_button.click(function () {
+                reject_button.removeClass("btn-danger").addClass("btn-default");
+                approve_button.removeClass("btn-default").addClass("btn-success");
+                status_input.val("approved");
+                reject_collapse.collapse('hide');
+                score_collapse.collapse('show');
+                year_collapse.collapse('show');
+                submit_button.collapse('show');
+                pic_collapse.collapse('show');
+                remark_collapse.collapse('show');
+            });
+
+            modal.find(".collapse").on("show.bs.collapse", function () {
+                modal.animate({
+                    'scroll-top': modal.innerHeight()
+                });
+            });
+
+            handleFormPost("#process-application-form", "{% url 'api/modify_application' %}", {
+                success_callback: function (data) {
+                    if (data.status === 'ok') {
+                        modal.modal('hide');
+                        loadContent(window.location.href, {}, undefined, {
+                            replace: true,
+                            anim: false,
+                            scroll: false
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+{% endif %}

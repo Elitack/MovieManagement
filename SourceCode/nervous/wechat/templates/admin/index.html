@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Platform - Movie System{% endblock %}
+
+{% block subtitle %}
+    <a class="navbar-brand">&gt;</a>
+    <a class="fake-link-scroll navbar-brand">Admin Platform</a>
+{% endblock subtitle %}
+
+{% block left-column %}
+    <a class="fake-link left-column-menu" data-toggle="collapse" data-target="#dashboard-menu">
+        <strong><i class="fa fa-dashboard fa-fw"></i>　Information Overview</strong>
+    </a>
+    <ul class="nav nav-stacked collapse in" id="dashboard-menu">
+        <hr>
+        <ul class="nav nav-stacked collapse in nav-pills">
+            <li id="dashboard-item" class="nav-header left-column-item"
+                data-url="{% url 'admin/dashboard' %}">
+                <a class="fake-link"><i class="fa fa-dashboard fa-fw"></i>　Information Overview</a>
+            </li>
+        </ul>
+    </ul>
+    <hr>
+    <a class="fake-link left-column-menu" data-toggle="collapse" data-target="#application-menu">
+        <strong><i class="fa fa-wrench fa-fw"></i>　Administration</strong>
+    </a>
+    <ul class="nav nav-stacked collapse in" id="application-menu">
+        <hr>
+        <ul class="nav nav-stacked collapse in nav-pills">
+            <li id="pending-applications-item" class="nav-header left-column-item"
+                data-url="{% url 'admin/applications' 'pending' %}">
+                <a class="fake-link"><i class="fa fa-tasks fa-fw"></i>　Pending Application
+                    <span class="badge badge-info pull-right" data-source="{% url 'badges/admin/pending-count' %}"></span>
+                </a>
+            </li>
+            <li id="processed-applications-item" class="nav-header left-column-item"
+                data-url="{% url 'admin/applications' 'processed' %}">
+                <a class="fake-link"><i class="fa fa-check fa-fw"></i>　Applications dealing</a>
+            </li>
+            <li id="all-applications-item" class="nav-header left-column-item"
+                data-url="{% url 'admin/applications' 'all' %}">
+                <a class="fake-link"><i class="fa fa-list-alt fa-fw"></i>　All Applications</a>
+            </li>
+        </ul>
+    </ul>
+    <hr>
+    <a class="fake-link left-column-menu" data-toggle="collapse" data-target="#analyse-menu">
+        <strong><i class="fa fa-signal fa-fw"></i>　See and Analyze</strong>
+    </a>
+    <ul class="nav nav-stacked collapse in" id="analyse-menu">
+        <hr>
+        <ul class="nav nav-stacked collapse in nav-pills">
+            <li id="official-accounts-list-item" class="nav-header left-column-item"
+                data-url="{% url 'admin/official-accounts' %}">
+                <a class="fake-link"><i class="fa fa-th-list fa-fw"></i>　List of Movies</a>
+            </li>
+            <li id="articles-list-item" class="nav-header left-column-item"
+                data-url="{% url 'admin/articles' %}">
+                <a class="fake-link"><i class="fa fa-file-text fa-fw"></i>　List of Detail</a>
+            </li>
+
+        </ul>
+    </ul>
+    <hr>
+
+
+    <hr>
+{% endblock left-column %}
+
+{% block main-page %}
+    <script>
+        $(function () {
+            loadContentOfItem("#dashboard-item");
+        });
+    </script>
+{% endblock main-page %}
+
+{% block modals %}
+{% endblock modals %}
